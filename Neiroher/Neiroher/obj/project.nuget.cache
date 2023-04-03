@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "qC9FwWPL2SPiNhSy3WrFl/re0YWGutFJLTAThY7P/5gK4lpPVpoD23ALsWSgQIruHsN1eMMpLukmD27EqBet2w==",
+  "success": true,
+  "projectFilePath": "D:\\projects\\Neiroher\\Neiroher\\Neiroher.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Valera\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\Valera\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
