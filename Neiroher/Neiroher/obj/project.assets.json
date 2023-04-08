@@ -133,11 +133,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\projects\\Neiroher\\Neiroher\\Neiroher.csproj",
+      "projectUniqueName": "D:\\projects\\DigitsRecognizer\\Neiroher\\Neiroher\\Neiroher.csproj",
       "projectName": "Neiroher",
-      "projectPath": "D:\\projects\\Neiroher\\Neiroher\\Neiroher.csproj",
+      "projectPath": "D:\\projects\\DigitsRecognizer\\Neiroher\\Neiroher\\Neiroher.csproj",
       "packagesPath": "C:\\Users\\Valera\\.nuget\\packages\\",
-      "outputPath": "D:\\projects\\Neiroher\\Neiroher\\obj\\",
+      "outputPath": "D:\\projects\\DigitsRecognizer\\Neiroher\\Neiroher\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

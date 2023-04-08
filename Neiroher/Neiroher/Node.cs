@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Neiroher
 {
@@ -60,23 +61,31 @@ namespace Neiroher
                     activation = MS.LRelu(sum);
                     break;
             }
+
+
         }
 
         public void BackPropagate()
         {
-            foreach (var connection in inputConnections)
+            for (int i = 0; i < inputConnections.Count; i++)
             {
-                connection.SetWeight(connection.weight - d * Net.step * connection.value);
+                inputConnections[i].SetWeight(inputConnections[i].weight - d * Net.step * inputConnections[i].value);
             }
+            bias -= d * Net.step;
         }
 
         public void RecalcDerivatives()
         {
             d *= MS.SigmoidDerS(activation);
-            foreach (var connection in inputConnections)
+            for (int i =0;i<inputConnections.Count;i++)
             {
-                connection.from.d += d * connection.weight;
+                inputConnections[i].from.SetD( d * inputConnections[i].weight);
             }
+        }
+
+        public void SetD(float value)
+        {
+            d = value;
         }
     }
 
@@ -86,7 +95,6 @@ namespace Neiroher
         public Node to;
         public bool dataPushed = false;
         public float value = 0, weight = 0;
-        public Connection self => this;
 
         public Connection(Node from, Node to)
         {

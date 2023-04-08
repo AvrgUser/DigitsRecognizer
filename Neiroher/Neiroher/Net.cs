@@ -14,8 +14,13 @@ namespace Neiroher
 
         public static float step = 0.0003f, avgEr = 0;
 
+        private Net instance;
+
+        public static Net Instance { get { return instance; } }
+
         public Net(params int[] nodeAms)
         {
+            instance = this;
             nodes = new Node[nodeAms.Length][];
             for (int i = 0; i < nodes.Length; i++)
             {
@@ -43,11 +48,6 @@ namespace Neiroher
 
         public void BackProp(float[] a)
         {
-            //RecDerivatives(a);
-            for (int i = layers.Length - 1; i > 0; i--)
-            {
-                layers[i].BackProp(step*(MS.Sigmoid(avgEr)+0.3f));
-            }
         }
 
         public void RecDerivatives(float[] a)
