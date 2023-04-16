@@ -8,20 +8,40 @@ namespace Neiroher
 {
     internal class Net
     {
-        public Node[][] nodes;
+        public Node[] nodes;
 
-        public Node[] input, output;
+        public int[] input, output;
+
+        public List<int> ready, done;
 
         public static float step = 0.0003f, avgEr = 0;
 
-        private Net instance;
+        private static Net instance;
 
         public static Net Instance { get { return instance; } }
 
-        public Net(params int[] nodeAms)
+        public Net(params int[][] nodeAms)
         {
             instance = this;
-            nodes = new Node[nodeAms.Length][];
+            int amount = 0;
+            for (int i = 0; i < nodeAms.Length; i++)
+            {
+                for (int j = 0; j < nodeAms[i].Length; j++)
+                {
+                    amount++;
+                }
+            }
+            nodes = new Node[amount];
+            for (int i = 0; i < nodeAms.Length;i++)
+            {
+                var layer = nodeAms[i];
+                for(int j = 0; j < layer.Length;j++)
+                {
+                    var node = layer[j];
+                    
+                }
+            }
+            
             for (int i = 0; i < nodes.Length; i++)
             {
                 nodes[i] = new Node[nodeAms[i]];
@@ -30,8 +50,8 @@ namespace Neiroher
                     nodes[i][j] = new Node();
                 }
             }
-            input = new Node[nodes[0].Length];
-            output = new Node[nodes[nodes.Length-1].Length];
+            input = new int[nodeAms[0].Length];
+            output = new int[nodes[nodes.Length-1].Length];
             for (int i = 0;i < nodes[0].Length; i++)
             {
                 input[i] = nodes[0][i];
@@ -40,10 +60,8 @@ namespace Neiroher
 
         public void Transform(float[] inputActs)
         {
-            foreach (var node in nodes)
-            {
-                
-            }
+            ready = new List<int>();
+            done = new List<int>();
         }
 
         public void BackProp(float[] a)
@@ -52,15 +70,11 @@ namespace Neiroher
 
         public void RecDerivatives(float[] a)
         {
-            for (int i = 0; i < output.nodes.Length; i++)
-            {
-                output[i].d = a[i]*MS.SigmoidDerS(output[i].activation);
-                //Console.WriteLine(output[i].d);
-            }
-            for (int i = layers.Length - 1; i > 0; i--)
-            {
-                layers[i].RecDerivatives();
-            }
+        }
+
+        public void AddReady(int number)
+        {
+            ready.Add(number);
         }
     }
 }
