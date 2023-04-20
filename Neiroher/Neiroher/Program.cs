@@ -4,9 +4,9 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace Neiroher
 {
-    static class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine("what to do?");
             var ans = Console.ReadLine();
@@ -21,7 +21,7 @@ namespace Neiroher
                     Manager.LoadSave(save);
                 }
                 Console.WriteLine(Directory.GetCurrentDirectory() + @"\" + save);
-                using (TextFieldParser parser = new TextFieldParser(@"C:\Users\Valera\Desktop\mnist_train_inv.csv"))
+                using (TextFieldParser parser = new TextFieldParser(@"C:\Users\Valera\Desktop\mnist_train.csv"))
                 {
                     parser.TextFieldType = FieldType.Delimited;
                     parser.SetDelimiters(",");
@@ -37,13 +37,14 @@ namespace Neiroher
                     for (int ep = 0, am = k; ep < 10; ep++)
                     {
                         k = am;
+                        Task networkJob = null;
                         while (k > 0)
                         {
                             k--;
                             int it = new Random().Next(0, k);
                             for (int i = 0, j = 0; i < it; i++)
                             {
-                                if (taken[i])
+                                if (!taken[i])
                                 {
                                     if (j == it) it = i;
                                     j++;
@@ -65,7 +66,8 @@ namespace Neiroher
                                 }
                                 else answer[j] = 0;
                             }
-                            Manager.Teach(input, answer);
+                            if (networkJob != null) networkJob.Wait();
+                            networkJob = Task.Run(() => { Manager.Teach(input, answer); });
                             if (k > 55000)
                             {
                                 //Console.WriteLine("close");
@@ -94,7 +96,7 @@ namespace Neiroher
                         float[] input = new float[pxs.Length - 1];
                         for (int i = 0; i < 784; i++)
                         {
-                            input[i] = 1-Convert.ToSingle(pxs[i+1]) / 255;
+                            input[i] = Convert.ToSingle(pxs[i+1]) / 255;
                         }
                         var answ = Manager.Get(input);
                         int biggest = 0;

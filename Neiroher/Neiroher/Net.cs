@@ -8,46 +8,57 @@ namespace Neiroher
 {
     internal class Net
     {
-        public Node[][] nodes;
+        public Layer[] layers;
 
-        public Node[] input, output;
+        public Layer input, output;
 
-        public static float step = 0.0003f, avgEr = 0;
-
-        private Net instance;
-
-        public static Net Instance { get { return instance; } }
+        public float step = 0.02f, avgEr = 0;
 
         public Net(params int[] nodeAms)
         {
-            instance = this;
-            nodes = new Node[nodeAms.Length][];
-            for (int i = 0; i < nodes.Length; i++)
+            layers = new Layer[nodeAms.Length];
+            for (int i = 0; i < nodeAms.Length; i++)
             {
-                nodes[i] = new Node[nodeAms[i]];
-                for (int j = 0; j < nodes[i].Length; j++)
-                {
-                    nodes[i][j] = new Node();
-                }
+                Layer newOne;
+                newOne = new Layer(nodeAms[i], i > 0 ? layers[i - 1] : null);
+                layers[i] = newOne;
+                newOne.number = i;
+                newOne.all = layers.Length;
             }
-            input = new Node[nodes[0].Length];
-            output = new Node[nodes[nodes.Length-1].Length];
-            for (int i = 0;i < nodes[0].Length; i++)
-            {
-                input[i] = nodes[0][i];
-            }
+            input = layers[0];
+            output = layers[^1];
+            output.bias = false;
         }
 
-        public void Transform(float[] inputActs)
+        public float[] Transform(float[] inputActs)
         {
-            foreach (var node in nodes)
+            if (inputActs.Length != input.nodes.Length)
             {
-                
+                throw new ArgumentException("wrong input");
             }
+            for (int i = 0; i < input.nodes.Length; i++)
+            {
+                input[i].activation = inputActs[i];
+            }
+            for (int i = 1; i < layers.Length; i++)
+            {
+                layers[i].Activate();
+            }
+            float[] outputActs = new float[output.nodes.Length];
+            for (int i = 0; i < output.nodes.Length; i++)
+            {
+                outputActs[i] = output[i].activation;
+            }
+            return outputActs;
         }
 
         public void BackProp(float[] a)
         {
+            //RecDerivatives(a);
+            for (int i = layers.Length - 1; i > 0; i--)
+            {
+                layers[i].BackProp(step*(MS.Sigmoid(avgEr)+0.3f));
+            }
         }
 
         public void RecDerivatives(float[] a)
